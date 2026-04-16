@@ -8,6 +8,7 @@ import (
 	"a/e/v2"
 	"bytes"
 	"context"
+	"iter"
 	"testing"
 	"time"
 
@@ -4114,4 +4115,321 @@ func (_c *cherryV2CarrotCall) OnV2Carrot() *cherryV2CarrotCall {
 
 func (_c *cherryV2CarrotCall) OnV2CarrotRaw() *cherryV2CarrotCall {
 	return _c.Parent.OnV2CarrotRaw()
+}
+
+// mangoMock mock of Mango.
+type mangoMock struct{ mock.Mock }
+
+// newMangoMock creates a new mangoMock.
+func newMangoMock(tb testing.TB) *mangoMock {
+	tb.Helper()
+
+	m := &mangoMock{}
+	m.Mock.Test(tb)
+
+	tb.Cleanup(func() { m.AssertExpectations(tb) })
+
+	return m
+}
+
+func (_m *mangoMock) Squeeze(dur time.Duration) string {
+	_ret := _m.Called(dur)
+
+	if _rf, ok := _ret.Get(0).(func(time.Duration) string); ok {
+		return _rf(dur)
+	}
+
+	_ra0 := _ret.String(0)
+
+	return _ra0
+}
+
+func (_m *mangoMock) OnSqueeze(dur time.Duration) *mangoSqueezeCall {
+	return &mangoSqueezeCall{Call: _m.Mock.On("Squeeze", dur), Parent: _m}
+}
+
+func (_m *mangoMock) OnSqueezeRaw(dur interface{}) *mangoSqueezeCall {
+	return &mangoSqueezeCall{Call: _m.Mock.On("Squeeze", dur), Parent: _m}
+}
+
+type mangoSqueezeCall struct {
+	*mock.Call
+	Parent *mangoMock
+}
+
+func (_c *mangoSqueezeCall) Panic(msg string) *mangoSqueezeCall {
+	_c.Call = _c.Call.Panic(msg)
+	return _c
+}
+
+func (_c *mangoSqueezeCall) Once() *mangoSqueezeCall {
+	_c.Call = _c.Call.Once()
+	return _c
+}
+
+func (_c *mangoSqueezeCall) Twice() *mangoSqueezeCall {
+	_c.Call = _c.Call.Twice()
+	return _c
+}
+
+func (_c *mangoSqueezeCall) Times(i int) *mangoSqueezeCall {
+	_c.Call = _c.Call.Times(i)
+	return _c
+}
+
+func (_c *mangoSqueezeCall) WaitUntil(w <-chan time.Time) *mangoSqueezeCall {
+	_c.Call = _c.Call.WaitUntil(w)
+	return _c
+}
+
+func (_c *mangoSqueezeCall) After(d time.Duration) *mangoSqueezeCall {
+	_c.Call = _c.Call.After(d)
+	return _c
+}
+
+func (_c *mangoSqueezeCall) Run(fn func(args mock.Arguments)) *mangoSqueezeCall {
+	_c.Call = _c.Call.Run(fn)
+	return _c
+}
+
+func (_c *mangoSqueezeCall) Maybe() *mangoSqueezeCall {
+	_c.Call = _c.Call.Maybe()
+	return _c
+}
+
+func (_c *mangoSqueezeCall) TypedReturns(a string) *mangoSqueezeCall {
+	_c.Call = _c.Return(a)
+	return _c
+}
+
+func (_c *mangoSqueezeCall) ReturnsFn(fn func(time.Duration) string) *mangoSqueezeCall {
+	_c.Call = _c.Return(fn)
+	return _c
+}
+
+func (_c *mangoSqueezeCall) TypedRun(fn func(time.Duration)) *mangoSqueezeCall {
+	_c.Call = _c.Call.Run(func(args mock.Arguments) {
+		_dur, _ := args.Get(0).(time.Duration)
+		fn(_dur)
+	})
+	return _c
+}
+
+func (_c *mangoSqueezeCall) OnSqueeze(dur time.Duration) *mangoSqueezeCall {
+	return _c.Parent.OnSqueeze(dur)
+}
+
+func (_c *mangoSqueezeCall) OnSqueezeRaw(dur interface{}) *mangoSqueezeCall {
+	return _c.Parent.OnSqueezeRaw(dur)
+}
+
+// guavaMock mock of Guava.
+type guavaMock struct{ mock.Mock }
+
+// newGuavaMock creates a new guavaMock.
+func newGuavaMock(tb testing.TB) *guavaMock {
+	tb.Helper()
+
+	m := &guavaMock{}
+	m.Mock.Test(tb)
+
+	tb.Cleanup(func() { m.AssertExpectations(tb) })
+
+	return m
+}
+
+func (_m *guavaMock) Iterate() iter.Seq2[string, error] {
+	_ret := _m.Called()
+
+	if _rf, ok := _ret.Get(0).(func() iter.Seq2[string, error]); ok {
+		return _rf()
+	}
+
+	_ra0, _ := _ret.Get(0).(iter.Seq2[string, error])
+
+	return _ra0
+}
+
+func (_m *guavaMock) OnIterate() *guavaIterateCall {
+	return &guavaIterateCall{Call: _m.Mock.On("Iterate"), Parent: _m}
+}
+
+func (_m *guavaMock) OnIterateRaw() *guavaIterateCall {
+	return &guavaIterateCall{Call: _m.Mock.On("Iterate"), Parent: _m}
+}
+
+type guavaIterateCall struct {
+	*mock.Call
+	Parent *guavaMock
+}
+
+func (_c *guavaIterateCall) Panic(msg string) *guavaIterateCall {
+	_c.Call = _c.Call.Panic(msg)
+	return _c
+}
+
+func (_c *guavaIterateCall) Once() *guavaIterateCall {
+	_c.Call = _c.Call.Once()
+	return _c
+}
+
+func (_c *guavaIterateCall) Twice() *guavaIterateCall {
+	_c.Call = _c.Call.Twice()
+	return _c
+}
+
+func (_c *guavaIterateCall) Times(i int) *guavaIterateCall {
+	_c.Call = _c.Call.Times(i)
+	return _c
+}
+
+func (_c *guavaIterateCall) WaitUntil(w <-chan time.Time) *guavaIterateCall {
+	_c.Call = _c.Call.WaitUntil(w)
+	return _c
+}
+
+func (_c *guavaIterateCall) After(d time.Duration) *guavaIterateCall {
+	_c.Call = _c.Call.After(d)
+	return _c
+}
+
+func (_c *guavaIterateCall) Run(fn func(args mock.Arguments)) *guavaIterateCall {
+	_c.Call = _c.Call.Run(fn)
+	return _c
+}
+
+func (_c *guavaIterateCall) Maybe() *guavaIterateCall {
+	_c.Call = _c.Call.Maybe()
+	return _c
+}
+
+func (_c *guavaIterateCall) TypedReturns(a iter.Seq2[string, error]) *guavaIterateCall {
+	_c.Call = _c.Return(a)
+	return _c
+}
+
+func (_c *guavaIterateCall) ReturnsFn(fn func() iter.Seq2[string, error]) *guavaIterateCall {
+	_c.Call = _c.Return(fn)
+	return _c
+}
+
+func (_c *guavaIterateCall) TypedRun(fn func()) *guavaIterateCall {
+	_c.Call = _c.Call.Run(func(args mock.Arguments) {
+		fn()
+	})
+	return _c
+}
+
+func (_c *guavaIterateCall) OnIterate() *guavaIterateCall {
+	return _c.Parent.OnIterate()
+}
+
+func (_c *guavaIterateCall) OnList() *guavaListCall {
+	return _c.Parent.OnList()
+}
+
+func (_c *guavaIterateCall) OnIterateRaw() *guavaIterateCall {
+	return _c.Parent.OnIterateRaw()
+}
+
+func (_c *guavaIterateCall) OnListRaw() *guavaListCall {
+	return _c.Parent.OnListRaw()
+}
+
+func (_m *guavaMock) List() iter.Seq[Water] {
+	_ret := _m.Called()
+
+	if _rf, ok := _ret.Get(0).(func() iter.Seq[Water]); ok {
+		return _rf()
+	}
+
+	_ra0, _ := _ret.Get(0).(iter.Seq[Water])
+
+	return _ra0
+}
+
+func (_m *guavaMock) OnList() *guavaListCall {
+	return &guavaListCall{Call: _m.Mock.On("List"), Parent: _m}
+}
+
+func (_m *guavaMock) OnListRaw() *guavaListCall {
+	return &guavaListCall{Call: _m.Mock.On("List"), Parent: _m}
+}
+
+type guavaListCall struct {
+	*mock.Call
+	Parent *guavaMock
+}
+
+func (_c *guavaListCall) Panic(msg string) *guavaListCall {
+	_c.Call = _c.Call.Panic(msg)
+	return _c
+}
+
+func (_c *guavaListCall) Once() *guavaListCall {
+	_c.Call = _c.Call.Once()
+	return _c
+}
+
+func (_c *guavaListCall) Twice() *guavaListCall {
+	_c.Call = _c.Call.Twice()
+	return _c
+}
+
+func (_c *guavaListCall) Times(i int) *guavaListCall {
+	_c.Call = _c.Call.Times(i)
+	return _c
+}
+
+func (_c *guavaListCall) WaitUntil(w <-chan time.Time) *guavaListCall {
+	_c.Call = _c.Call.WaitUntil(w)
+	return _c
+}
+
+func (_c *guavaListCall) After(d time.Duration) *guavaListCall {
+	_c.Call = _c.Call.After(d)
+	return _c
+}
+
+func (_c *guavaListCall) Run(fn func(args mock.Arguments)) *guavaListCall {
+	_c.Call = _c.Call.Run(fn)
+	return _c
+}
+
+func (_c *guavaListCall) Maybe() *guavaListCall {
+	_c.Call = _c.Call.Maybe()
+	return _c
+}
+
+func (_c *guavaListCall) TypedReturns(a iter.Seq[Water]) *guavaListCall {
+	_c.Call = _c.Return(a)
+	return _c
+}
+
+func (_c *guavaListCall) ReturnsFn(fn func() iter.Seq[Water]) *guavaListCall {
+	_c.Call = _c.Return(fn)
+	return _c
+}
+
+func (_c *guavaListCall) TypedRun(fn func()) *guavaListCall {
+	_c.Call = _c.Call.Run(func(args mock.Arguments) {
+		fn()
+	})
+	return _c
+}
+
+func (_c *guavaListCall) OnIterate() *guavaIterateCall {
+	return _c.Parent.OnIterate()
+}
+
+func (_c *guavaListCall) OnList() *guavaListCall {
+	return _c.Parent.OnList()
+}
+
+func (_c *guavaListCall) OnIterateRaw() *guavaIterateCall {
+	return _c.Parent.OnIterateRaw()
+}
+
+func (_c *guavaListCall) OnListRaw() *guavaListCall {
+	return _c.Parent.OnListRaw()
 }

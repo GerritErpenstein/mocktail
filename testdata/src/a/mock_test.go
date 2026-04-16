@@ -2,6 +2,7 @@ package a
 
 import (
 	"context"
+	"iter"
 	"testing"
 	"time"
 )
@@ -12,6 +13,8 @@ import (
 // mocktail-:fmt.Stringer
 // mocktail:Orange
 // mocktail:d.Cherry
+// mocktail:Mango
+// mocktail:Guava
 
 func TestName(t *testing.T) {
 	var s Pineapple = newPineappleMock(t).
@@ -55,4 +58,21 @@ func TestName(t *testing.T) {
 	case <-time.After(10 * time.Millisecond):
 		t.Fatalf("timed out waiting for an orange juice")
 	}
+
+	var m Mango = newMangoMock(t).
+		OnSqueeze(time.Second).TypedReturns("juice").Once().
+		Parent
+
+	m.Squeeze(time.Second)
+
+	seq2 := func(yield func(string, error) bool) {}
+	seq := func(yield func(Water) bool) {}
+
+	var g Guava = newGuavaMock(t).
+		OnIterate().TypedReturns(iter.Seq2[string, error](seq2)).Once().
+		OnList().TypedReturns(iter.Seq[Water](seq)).Once().
+		Parent
+
+	g.Iterate()
+	g.List()
 }

@@ -587,6 +587,24 @@ func (s Syrup) getTypeName(t types.Type, last bool) string {
 	case *types.Array:
 		return fmt.Sprintf("[%d]%s", v.Len(), s.getTypeName(v.Elem(), false))
 
+	case *types.Alias:
+		if v.TypeArgs() != nil && v.TypeArgs().Len() > 0 {
+			name := ""
+			if v.Obj().Pkg() != nil && v.Obj().Pkg().Path() != s.PkgPath {
+				name = v.Obj().Pkg().Name() + "."
+			}
+			name += v.Obj().Name()
+
+			typeArgs := make([]string, v.TypeArgs().Len())
+			for i := 0; i < v.TypeArgs().Len(); i++ {
+				typeArgs[i] = s.getTypeName(v.TypeArgs().At(i), false)
+			}
+
+			name += "[" + strings.Join(typeArgs, ",") + "]"
+			return name
+		}
+		return s.getTypeName(v.Rhs(), last)
+
 	default:
 		panic(fmt.Sprintf("OOPS %[1]T %[1]s", t))
 	}
@@ -604,39 +622,32 @@ func (s Syrup) getTupleTypes(t *types.Tuple) []string {
 }
 
 func (s Syrup) getNamedTypeName(t *types.Named) string {
+	var name string
+
 	if t.Obj() != nil && t.Obj().Pkg() != nil {
 		if t.Obj().Pkg().Path() == s.PkgPath {
-			return t.Obj().Name()
+			name = t.Obj().Name()
+		} else {
+			name = t.Obj().Pkg().Name() + "." + t.Obj().Name()
 		}
-		return t.Obj().Pkg().Name() + "." + t.Obj().Name()
+	} else {
+		name = t.String()
+		i := strings.LastIndex(name, "/")
+		if i > -1 {
+			name = name[i+1:]
+		}
 	}
 
-	name := t.String()
-
-	// Parse generic parameters.
+	// Append generic type arguments.
 	if t.TypeArgs() != nil && t.TypeArgs().Len() > 0 {
-		name = ""
-		// Add package name if it's not the same as the current package.
-		if t.Obj().Pkg().Path() != s.PkgPath {
-			name = t.Obj().Pkg().Name() + "."
-		}
-		name += t.Obj().Name()
-
-		// Add all type arguments.
 		typeArgs := make([]string, t.TypeArgs().Len())
 		for i := 0; i < t.TypeArgs().Len(); i++ {
 			typeArgs[i] = s.getTypeName(t.TypeArgs().At(i), false)
 		}
 
 		name += "[" + strings.Join(typeArgs, ",") + "]"
-
-		return name
 	}
 
-	i := strings.LastIndex(t.String(), "/")
-	if i > -1 {
-		name = name[i+1:]
-	}
 	return name
 }
 

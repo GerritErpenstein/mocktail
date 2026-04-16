@@ -240,7 +240,15 @@ func getTypeImports(t types.Type) []string {
 			return []string{""}
 		}
 
-		return []string{v.Obj().Pkg().Path()}
+		imports := []string{v.Obj().Pkg().Path()}
+
+		if v.TypeArgs() != nil {
+			for i := 0; i < v.TypeArgs().Len(); i++ {
+				imports = append(imports, getTypeImports(v.TypeArgs().At(i))...)
+			}
+		}
+
+		return imports
 
 	case *types.Pointer:
 		return getTypeImports(v.Elem())
@@ -253,6 +261,19 @@ func getTypeImports(t types.Type) []string {
 
 	case *types.Chan:
 		return []string{""}
+
+	case *types.Alias:
+		if v.TypeArgs() != nil && v.TypeArgs().Len() > 0 {
+			var imports []string
+			if v.Obj().Pkg() != nil {
+				imports = append(imports, v.Obj().Pkg().Path())
+			}
+			for i := 0; i < v.TypeArgs().Len(); i++ {
+				imports = append(imports, getTypeImports(v.TypeArgs().At(i))...)
+			}
+			return imports
+		}
+		return getTypeImports(v.Rhs())
 
 	default:
 		panic(fmt.Sprintf("OOPS %[1]T %[1]s", t))
